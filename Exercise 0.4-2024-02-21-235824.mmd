@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: execute HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: render UI to users
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: executing JavaScript file
+    deactivate server
+
+    Note right of browser: The javaScript file is usually commanded to excute by the HTML elements
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "Hello world!", "date": "2024-2-21" }, ... ]
+    deactivate server
+
+    Note right of browser: The server fetches the data from the JSON data file, then render it
+    
