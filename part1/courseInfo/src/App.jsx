@@ -1,134 +1,127 @@
 import React from "react"
+import { useState } from "react"
 
-const Header = (props) =>{
-  console.log(props)
-  return(
-    <div>
-      <h2>{props.course}</h2>
-    </div>
-  )
-}
 
-const Part = (props) => {
-  return(
-    <div>
-      <p>{props.title}{props.exercise}</p>
-    </div>
-  )
+//DESTRUCTURING
+// const Hello = ({name, age} ) => {
+//   const bornYear = () => new Date().getFullYear()- age
+//  return (
+//   <div>
+//     <p>
+//       Hello {name}, you are {age} years old
+//     </p>
+//     <p>So you were probably born in {bornYear()}</p>
+//   </div>
+// )
+// }
 
-}
 
-const Content = (props) =>{
-  console.log(props)
-  return(
-    <div>
-      <Part title = {props.contents[0].title} exercise= {props.contents[0].exercise}/>
-      <Part title = {props.contents[1].title} exercise= {props.contents[1].exercise} />
-      <Part title = {props.contents[2].title} exercise= {props.contents[2].exercise}/>
-    </div>
-  )
-}
+// const Display = ({counter}) => <div>{counter}</div>
+ //const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
 
-const Total = (props) =>{
-  console.log(props)
-  return(
-    <div>
-      <p>Number of exercises {props.contents[0].exercise + props.contents[1].exercise + props.contents[2].exercise} </p>
-    </div>
-  )
+/*renders completely different React elements depending on the state of the application*/
+// const History = (props) => {
+//   if (props.allClicks.length === 0) {
+//     return (
+//       <div>
+//         the app is used by pressing the buttons
+//       </div>
+//     )
+//   }
+//   return (
+//     <div>
+//       button press history: {props.allClicks.join(' ')}
+//     </div>
+//   )
+// }
 
-}
 
+const Button = (props) => (
+  <button onClick={props.handleClick}>{props.text}</button>
+)
 const App = () => {
-  const course= {
-    header : 'Half Stack application development',
-    contents : [
-      {title : 'Fundamentals of React    ', exercise: 10},
-      {title : 'Using props to pass data    ', exercise :7},
-      {title : 'State of a component    ', exercise: 14},
-    ]
+
+//   const [left, setLeft] = useState(0)
+//   const [right, setRight] = useState(0)
+//   //every click is stored in a separate piece of state called allClicks
+//   const [allClicks, setAll] = useState([])
+//   // track of the total number of button presses in the state total
+//   const [total, setTotal] = useState(0)
+  
+
+//   // const handleClick = () => {
+//   //   console.log('clicked')
+//   // }
+// //statefule componanents
+//   // setTimeout(
+//   //   () => setCounter(),
+//   //   1000)
+
+
+//   // const increaseByOne = () => {
+//   //   console.log('increasing, value before', counter)
+//   //   setCounter(counter + 1)
+//   // }
+
+//   // const decreaseByOne = () => { 
+//   //   console.log('decreasing, value before', counter)
+//   //   setCounter(counter - 1)
+//   // }
+
+//   // const setToZero = () => {
+//   //   console.log('resetting to zero, value before', counter)
+//   //   setCounter(0)
+//   // }
+
+//   const handleLeftClick = () => {
+//     setAll(allClicks.concat('L'))
+//     const updatedLeft = left + 1
+//     setLeft(updatedLeft)
+//     setTotal(updatedLeft + right)
+//   }
+
+//   const handleRightClick = () => {
+//     setAll(allClicks.concat('R'))
+//     const updatedRight= right + 1
+//     setRight(updatedRight)
+//     setTotal(left + updatedRight)
+//   }
+ 
+
+//   return (
+//     <div>
+//       {left}
+//       <Button onClick={handleLeftClick} text= 'left'/>
+//       <Button onClick={handleRightClick} text= 'right'/>
+//       {right}
+//       <History allClicks={allClicks} />
+//       <p>total is {total}</p>
+//     </div>
+//   )
+// }
+
+const [value, setValue] = useState(10)
+// const handleClick = () => {
+//   console.log('clicked the button, reset to 0')
+//   setValue(0)
+// }
+
+//function that return a function
+const setToValue = (newValue)  => {
+  console.log('value now', newValue)  // print the new value to console
+  setValue(newValue)
 }
-  console.log('Running App')
 
   return (
     <div>
-      <Header course={course.header}/>
-      <Content contents={course.contents}/>
-      <Total contents={course.contents} />
+      {value}
+      <Button handleClick={() => setToValue(1000)} text="thousand" />
+      <Button handleClick={() => setToValue(0)} text="reset" />
+      <Button handleClick={() => setToValue(value + 1)} text="increment" />
+
+      {/* infinite recursion because setValue(0) is executed immediately during the rendering phase <button onClick={setValue(0)}>button</button> */}
     </div>
   )
 }
 
 export default App
-
-
-
-
-/* NOTES 
-
-/* JSX 
-const App = () => {
-  const now = new Date()
-  const a = 20
-  const b = 11
-  console.log(now, a+b)
-
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'p', null, ' hi bitch ', now.toString()
-    ),
-    React.createElement(
-      'p', null, a, ' plus ', b, ' is ', a+b
-    )
-
-
-  )
-}
-*/
-
-//multiple components and props
-/*const Hello = (props) => {
-  console.log(props)
-  return (
-    <div>
-      <p>Hello {props.name}, you are {props.age}</p>
-    </div>
-  )
-}
-
-const App = () => {
-  const name = 'Peter'
-  const age = 10
-  return (
-    <>
-      <h1>Greetings</h1>
-
-      <Hello name='lil bitch' age={70-32}/>
-      <Hello name= {name} age= {age}/>
-      
-    </>
-  )
-}
-*/
-
-//DO NOT RENDER OBJECTS
-// const App = () => {
-//   const friends = [
-//     { name: 'Peter', age: 4 },
-//     { name: 'Maya', age: 10 },
-
-//   ]
-
-//   /*Objects are not valid as a React child!!!!!!!!!!!!!!!!
-//    * this causes a problem because the item to be rendered
-//    * in the braces is an object.
-//    */
-//   return (
-//     <div>
-//       <p>{friends[0].name} {friends[0].age}</p>
-//       <p>{friends[1].name}{friends[1].age}</p>
-//     </div>
-//   )
-// }
