@@ -9,24 +9,34 @@ const App = () => {
 
   const addPerson= (event) =>{
     event.preventDefault()
+
+    const nameExist = persons.filter(person =>person.name === newName)
+    if(nameExist.length > 0){
+      window.alert(`${newName} is already in the Phone Book!`)
+    }else{
     const nameObj = {
       name:newName,
       id: persons.length+1
     }
+
     setPersons(persons.concat(nameObj))
     setNewName('')
+  }
   }
 
   const handleNameChange =(event)=>{
     console.log(event.target.value)
     setNewName(event.target.value)
-
   }
+
+
+
+  
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
+      <form onSubmit={addPerson} >
           name: <input value={newName} onChange={handleNameChange} />
           <button type="submit">add</button>
       </form>
