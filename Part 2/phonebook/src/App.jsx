@@ -5,6 +5,7 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
   //state to help us access new name from <input?>
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   
 
   const addPerson= (event) =>{
@@ -16,17 +17,24 @@ const App = () => {
     }else{
     const nameObj = {
       name:newName,
+      number: newNumber,
       id: persons.length+1
     }
 
     setPersons(persons.concat(nameObj))
     setNewName('')
+    setNewNumber('')
   }
   }
 
   const handleNameChange =(event)=>{
     console.log(event.target.value)
     setNewName(event.target.value)
+  }
+
+  const handleNumberChange =(event)=>{
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
   }
 
 
@@ -37,7 +45,10 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson} >
-          name: <input value={newName} onChange={handleNameChange} />
+          name: <input value={newName} onChange={handleNameChange} /> 
+          <br/> 
+          number: <input valye={newNumber} onChange={handleNumberChange} />
+          <br/>
           <button type="submit">add</button>
       </form>
       
