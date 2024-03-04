@@ -1,18 +1,33 @@
 import React from "react"
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Note from './components/Note'
+import axios from 'axios'
 
 
-const App = (props) => {
+const App = () => {
   /*uses the useState function to initialize the piece 
   of state stored in notes with the array of notes
   passed in the props
   */
-  const [notes, setNotes] = useState(props.notes)
+  const [notes, setNotes] = useState([])
   //new state to help us access the data gtabed by the <input/>
   const [newNote, setNewNote] = useState(' ')
   //stores list of nodes
   const [showAll, setShowAll] = useState(true)
+
+  //EFFECT HOOKS
+  const hook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/notes')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }
+  
+  useEffect(hook, [])
+
 
   //HTML EVENT
   const addNote = (event) => {
