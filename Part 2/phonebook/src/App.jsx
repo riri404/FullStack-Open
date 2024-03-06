@@ -36,18 +36,33 @@ const App = () => {
         })
       setNewName('')
       setNewNumber('')
+    }
+
+    const nameExist = persons.filter(person =>person.name === newName)
+    const updatedName= nameExist[0]
+    const personUpdated = {...updatedName, number : newNumber}
+
+    if(nameExist.length !== 0){
+      const result = window.confirm(`${updatedName.name} is already in the Phone Book, replace old number with a new one?`)
+      if (result){
+      personService
+      .update(personUpdated.id, personUpdated)
+      .then(returnedPerson =>{
+        setPersons(persons.map(person=> 
+          person.id !== updatedName.id ? person :returnedPerson))
+        setNewName('')
+        setNewNumber('')}
+      )
+      }
+    
+      
+    }
+    
+    
+
+
+    
   
-
-    
-
-    // const nameExist = persons.filter(person =>person.name === newName)
-    // if(nameExist.length > 0){
-    //   window.alert(`${newName} is already in the Phone Book!`)
-    
-    
-
-    
-  }
   }
 
   const handleNameChange =(event)=>{
