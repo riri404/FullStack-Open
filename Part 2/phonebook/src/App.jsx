@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Person from "./Components/person"
 import Filter from "./Components/Filter"
 import PersonForm from './Components/PersonForm'
-import axios from 'axios'
+import personService from './services/personSend'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,30 +12,41 @@ const App = () => {
   const [filter, setFilter] = useState('')
   
   useEffect(()=>{
-    console.log('Effect');
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('getting data')
-      setPersons(response.data)})
+    personService
+    .getAll()
+    .then(newResponse => {
+      setPersons(newResponse)})
   },[])
 
   const addPerson= (event) =>{
     event.preventDefault()
-
-    const nameExist = persons.filter(person =>person.name === newName)
-    if(nameExist.length > 0){
-      window.alert(`${newName} is already in the Phone Book!`)
-    }else{
     const nameObj = {
       name:newName,
-      number: newNumber,
-      id: persons.length+1
+      number: newNumber
     }
 
-    setPersons(persons.concat(nameObj))
-    setNewName('')
-    setNewNumber('')
+    const checkPerson = persons.find(person => 
+      person.name.toLowerCase() === nameObj.name.toLowerCase())
+
+    if (!checkPerson) {
+      personService
+        .create(nameObj)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+        })
+      setNewName('')
+      setNewNumber('')
+  
+
+    
+
+    // const nameExist = persons.filter(person =>person.name === newName)
+    // if(nameExist.length > 0){
+    //   window.alert(`${newName} is already in the Phone Book!`)
+    
+    
+
+    
   }
   }
 
@@ -54,8 +65,19 @@ const App = () => {
   }
 
   const filtered = filter ? persons.filter(person => 
-    person.name.toLowerCase().includes(filter.toLowerCase()))
-    :persons 
+    person.name.toLowerCase().includes(filter.toLowerCase())):persons 
+  
+  const deletePerson =(id) => {
+    const toBeDeleted = persons.filter(p=> p.id ===id)
+    const deletedName= toBeDeleted[0].name
+    const deletedId= toBeDeleted[0].id
+    if(window.confirm(`Are you sure you want to delete ${deletedName}`)){
+      personService
+      .toDelete(deletedId)
+      console.log(`${deletedName} successfully deleted`)
+      setPersons(persons.filter(person=> person.id !== deletedId))
+    }
+  }
 
   return (
     <div>
@@ -70,7 +92,7 @@ const App = () => {
       
       <h3>Numbers</h3>
       <ul>
-            {filtered.map(person=> <Person key={person.id} person={person}/>)}
+            {filtered.map(person=> <Person key={person.id} person={person} deletePerson={deletePerson}/>)}
       </ul>
     </div>
   )
