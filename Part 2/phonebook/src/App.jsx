@@ -39,7 +39,7 @@ const App = () => {
       setErrorMessage(`Added ${nameObj.name}`)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 3000)
 
       setNewName('')
       setNewNumber('')
@@ -67,7 +67,7 @@ const App = () => {
         )
         setTimeout(() => {
           setErrorMessage(null)
-        }, 5000)
+        }, 3000)
         setPersons(personUpdated.filter(p => p.id !== id))
       })
       
